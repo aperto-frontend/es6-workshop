@@ -1,3 +1,1 @@
-import say from './modules/greetings.module';
-
-console.log(say()); 
+console.log('JS is running!');
