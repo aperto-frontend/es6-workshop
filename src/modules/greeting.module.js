@@ -3,4 +3,6 @@ function saySaying() {
 	return mySaying;
 }
 
-export default function saySomething() { return saySaying(); }
+export default function saySomething() {
+	return saySaying();
+}
