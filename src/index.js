@@ -1,3 +1,3 @@
-import say from './modules/greetings.module';
+import say from './modules/greeting.module';
 
 console.log(say()); 
