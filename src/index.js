@@ -1,3 +1,3 @@
-import say from './modules/greeting.module';
+import sayMyName from './modules/greeting.module';
 
-console.log(say()); 
+console.log(sayMyName('Sebbo'));

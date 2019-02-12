@@ -1,6 +1,5 @@
-function saySaying() {
-	let mySaying = 'Just say something!';
-	return mySaying;
+function saySaying(name = 'Ellis') {
+	return `Just saying my name, which is ${name}`;
 }
 
-export default function saySomething() { return saySaying(); }
+export default function saySomething(name) { return saySaying(name); }
