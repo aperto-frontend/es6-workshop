@@ -16,33 +16,17 @@ const tplComponent = new RenderComponent(
 );
 const imageComponent = new RenderComponent({
 	el: 'images',
-	text: 'Images Container'
+	text: 'Images Container',
+	color: 'blue',
+	imgs: [
+		'https://placeimg.com/640/480/any',
+		'https://placeimg.com/1280/780/any'
+	]
 });
 const quotesComponent = new RenderComponent({
 	el: 'quotes',
 	text: 'Quotes Container'
 });
-
-const renderTplComponent = () => {
-	fetch('https://api.chucknorris.io/jokes/random')
-		.then(res => res.json())
-		.then(data => tplComponent.render({ text: data.value }));
-
-	tplComponent.render();
-};
-
-const renderImageComponent = () => {
-	Promise.all([
-		loadImage('https://placeimg.com/640/480/any'),
-		loadImage('https://placeimg.com/1280/780/any')
-	])
-		.then((imgs) => {
-			imageComponent.render({
-				imgs
-			});
-		})
-		.catch()
-};
 
 
 Promise.all([
@@ -64,15 +48,11 @@ Promise.all([
 		quotesComponent.render({
 			text: dataset2.value
 		});
-
-		document.body.append(`${dataset1.value}`);
-
 	})
 	.catch(e => e);
 
 
-renderImageComponent();
-renderTplComponent();
+imageComponent.render();
 
 
 
