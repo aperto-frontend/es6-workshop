@@ -12,13 +12,7 @@ export default class RenderComponent extends Base {
 	}
 
 	fetchImages() {
-		const imgPromise = [];
-
-		this.imgs.forEach(img => {
-			imgPromise.push(loadImage(img));
-		});
-
-		return Promise.all(imgPromise);
+		return Promise.all(this.imgs.map(img => loadImage(img)));
 	}
 
 	async render({text, imgs} = {}) {
