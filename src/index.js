@@ -53,3 +53,79 @@ Promise.all([
 
 
 imageComponent.render();
+
+
+fetch('http://api.population.io:80/1.0/population/1980/Germany/')
+	.then(res => res.json())
+	.then((data) => {
+		const test = data
+			.filter(item => item.age >= 20 && item.age <= 40)
+			.map(({ females, males, age }) => {
+				return {
+					females,
+					males,
+					age
+				}
+			});
+
+		console.log('test: ', test);
+	});
+
+
+async function getPopulation() {
+	const res = await fetch('http://api.population.io:80/1.0/population/1980/Germany/');
+	const data = await res.json();
+	const filteredAndMapped = data
+		.map(({ females, males, age }) => {
+			return {
+				females,
+				males,
+				age
+			}
+		}).filter(item => item.age >= 20 && item.age <= 40);
+
+
+	console.log('filteredAndMapped: ', filteredAndMapped);
+}
+
+// getPopulation();
+
+function fetchMyStuff(arr) {
+	return arr.reduce((acc, item) => {
+		return acc.then((results) => {
+			return fetch(item)
+				.then(res => res.json())
+				.then((data) => [...results, data]);
+		})
+
+	}, Promise.resolve([]));
+}
+
+async function fetchMyStuffWithAsync(arr) {
+	return arr.reduce(async (acc, item) => {
+		const currentAccData = await acc;
+		const currentItemRes = await fetch(item);
+		const currentItemData = await currentItemRes.json();
+
+		return [...currentAccData, currentItemData];
+	}, Promise.resolve([]));
+}
+
+fetchMyStuff([
+	'http://api.population.io:80/1.0/population/1980/Germany/',
+	'http://api.population.io:80/1.0/population/1985/Germany/'
+]).then(data => {
+	console.log('data: ', data);
+});
+
+
+fetchMyStuffWithAsync([
+	'http://api.population.io:80/1.0/population/1980/Germany/',
+	'http://api.population.io:80/1.0/population/1985/Germany/'
+]).then(data => {
+	console.log('data async: ', data);
+});
+
+
+
+// getPopulation();
