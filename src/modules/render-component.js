@@ -9,7 +9,7 @@ export default class RenderComponent extends Base {
 		this.color = color;
 	}
 
-	render({text, imgs}) {
+	render({text, imgs} = {}) {
 		this.element.innerHTML = tpl({
 			text: text || this.text,
 			color: this.color,
