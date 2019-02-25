@@ -53,11 +53,3 @@ Promise.all([
 
 
 imageComponent.render();
-
-
-
-
-
-
-
-
