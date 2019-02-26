@@ -2,6 +2,7 @@ import say from './modules/greeting.module';
 import Base from './modules/base';
 import RenderComponent from './modules/render-component';
 import loadImage from './modules/image-loader';
+import * as dataHandler from './utils/data-handler';
 
 // Simple greeting module
 console.log(say());
@@ -68,7 +69,7 @@ fetch('http://api.population.io:80/1.0/population/1980/Germany/')
 				}
 			});
 
-		console.log('test: ', test);
+		console.log('simple fetch population data: ', test);
 	});
 
 
@@ -84,18 +85,15 @@ async function getPopulation() {
 			}
 		}).filter(item => item.age >= 20 && item.age <= 40);
 
-
-	console.log('filteredAndMapped: ', filteredAndMapped);
+	console.log('getPopulation: ', filteredAndMapped);
 }
-
-// getPopulation();
 
 function fetchMyStuff(arr) {
 	return arr.reduce((acc, item) => {
 		return acc.then((results) => {
 			return fetch(item)
 				.then(res => res.json())
-				.then((data) => [...results, data]);
+				.then((data) => [ ...results, data ]);
 		})
 
 	}, Promise.resolve([]));
@@ -107,25 +105,25 @@ async function fetchMyStuffWithAsync(arr) {
 		const currentItemRes = await fetch(item);
 		const currentItemData = await currentItemRes.json();
 
-		return [...currentAccData, currentItemData];
+		return [ ...currentAccData, currentItemData ];
 	}, Promise.resolve([]));
 }
 
-fetchMyStuff([
-	'http://api.population.io:80/1.0/population/1980/Germany/',
-	'http://api.population.io:80/1.0/population/1985/Germany/'
-]).then(data => {
-	console.log('data: ', data);
-});
-
+const pipeline = [
+	dataHandler.concatenate,
+	dataHandler.filterByAge,
+	dataHandler.mapPopulation
+];
 
 fetchMyStuffWithAsync([
 	'http://api.population.io:80/1.0/population/1980/Germany/',
 	'http://api.population.io:80/1.0/population/1985/Germany/'
 ]).then(data => {
-	console.log('data async: ', data);
+	const newData = pipeline.reduce((acc, func) => {
+		return func(acc);
+	}, data);
+	console.log('pipe data: ', newData);
 });
-
 
 
 // getPopulation();
